@@ -1,45 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react'
 
-class Movie extends Component {
+const Movie = ({ title, description, like, unlike, image, handlerClickLike, handlerClickUnlike }) => (
+  <li className="Movie">
+    <figure className="Movie-image">
+      <img height="160px" width="110" src={ image } alt="title" />
+    </figure>
+    <div className="Movie-content">
+      <div className="Movie-meta">
+        <h2>{ title }</h2>
+        <p>{ description }</p>
+      </div>
+      <div className="Movie-actions">
+        <span
+          onClick={handlerClickLike}
+          className={`icon-like ${like ? 'is-liked' : ''}`}
+        >
+          &#10003;
+        </span>
+        <span
+          onClick={handlerClickUnlike}
+          className={`icon-unlike ${unlike ? 'is-unliked' : ''}`}
+        >
+          &#10005;
+        </span>
+      </div>
+    </div>
+  </li>
+)
 
-  // Esto se puede mejorar con redux.
-  onLike = (event) => {
-    event.preventDefault();
-    this.props.onLike(this.props.index);
-  }
-
-  onUnlike = (event) => {
-    event.preventDefault();
-    this.props.onUnlike(this.props.index);
-  }
-
-  render(){
-    const {
-      image,
-      description,
-      title,
-      like,
-      unlike
-    } = this.props;
-
-    return(
-      <li className="Movie">
-        <figure className="Movie-image">
-          <img height="160px" width="110" src={ image } />
-        </figure>
-        <div className="Movie-content">
-          <div className="Movie-meta">
-            <h2>{ title }</h2>
-            <p>{ description }</p>
-          </div>
-          <div className="Movie-actions">
-            <span onClick={this.onLike} className={`icon-like ${like ? 'is-liked' : '' }`}>&#10003;</span>
-            <span onClick={this.onUnlike} className={`icon-unlike ${unlike ? 'is-unliked' : '' }`}>&#10005;</span>
-          </div>
-        </div>
-      </li>
-    );
-  }
-}
-
-export default Movie;
+export default Movie

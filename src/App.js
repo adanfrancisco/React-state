@@ -1,74 +1,81 @@
-import React, { Component } from 'react';
-import './App.css';
-import MovieList from './components/MovieList';
-import Footer from './components/Footer';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import MovieList from './components/MovieList'
+import Footer from './components/Footer'
+import './App.css'
+import { like, unlike, add } from './actions'
 
-class App extends Component {
-
+class Movies extends Component {
   constructor(props) {
     super(props);
-    const { list } = this.props;
-    // Nota: no es muy recomendable para proyectos grandes ya que se maneja el index por callbacks
     this.state = {
-      list: list,
-      moviesLength: list.length,
-      likeCount: 0,
-      unlikeCount: 0
+      movies: []
     };
-    this.onLike = this.onLike.bind(this);
-    this.onUnlike = this.onUnlike.bind(this);
   }
 
-  onLike(index) {
-    const { list, likeCount, unlikeCount } = this.state;
-    const newList = list;
-    const { like, unlike } = newList[index];
-    newList[index].like = !like;
-    newList[index].unlike = !like && unlike ? false : unlike;
-    this.setState({
-      list: newList,
-      likeCount: !like ? likeCount + 1 : likeCount - 1,
-      unlikeCount: !like && unlike ? unlikeCount - 1 : unlikeCount
-    })
+  handlerClickLike = (id, like, unlike) => {
+    this.props.like(id, like, unlike)
   }
 
-  onUnlike(index) {
-    const { list, likeCount, unlikeCount } = this.state;
-    const newList = list;
-    const { unlike, like } = newList[index];
-    newList[index].unlike = !unlike;
-    newList[index].like = !unlike && like ? false : like;
-    this.setState({
-      list: newList,
-      unlikeCount: !unlike ? unlikeCount + 1 : unlikeCount - 1,
-      likeCount: !unlike && like ? likeCount - 1 : likeCount
-    })
+  handlerClickUnlike = (id, like, unlike) => {
+    this.props.unlike(id, unlike, like)
+  }
+
+  onAddClick = (e) => {
+    // console.log(`text -> ${this.input.value}`);
+    e.preventDefault()
+    if (!this.title.value.length) {
+      return
+    }
+    this.props.add(Date.now(), this.title.value, this.description.value);
+    this.title.value = '';
+    this.description.value = '';
+  }
+
+  setTitle = element => {
+    this.title = element
+  }
+
+  setDescription = element => {
+    this.description = element
   }
 
   render() {
-    const {
-      list,
-      moviesLength,
-      likeCount,
-      unlikeCount
-    } = this.state;
+    const { data, likesCount: {likeCount}, likesCount: {unlikeCount} } = this.props
 
     return (
       <section className="container">
         <MovieList 
-          list={ list }
-          onLike={ this.onLike }
-          onUnlike={ this.onUnlike }
+          movies={ data }
+          handlerClickLike={this.handlerClickLike}
+          handlerClickUnlike={this.handlerClickUnlike}
         />
 
         <Footer 
-          all={ moviesLength }
-          likeCount={ likeCount }
-          unlikeCount={ unlikeCount }
+          likeCount={likeCount}
+          unlikeCount={unlikeCount}
+          all={data.length}
+          setTitle={this.setTitle}
+          setDescription={this.setDescription}
+          onAddClick={this.onAddClick}
         />
       </section>
-    );
+    )
   }
 }
 
-export default App;
+function mapStateToProps(state, props) {
+  // console.log(state); // toma el nombre del reducer.
+  return {
+    data: state.dataMovies,
+    likesCount: state.likesCount
+  };
+}
+
+const mapDispatchToProps = {
+  like,
+  unlike,
+  add
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movies)

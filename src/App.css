@@ -17,7 +17,7 @@ body {
 
 .MovieList {
   box-sizing: border-box;
-  height: 560px;
+  height: 450px;
   overflow-y: auto;
   margin: 0;
   padding: 0;
@@ -105,7 +105,7 @@ body {
 
 .Footer {
   box-sizing: border-box;
-  height: 40px;
+  height: 170px;
   bottom: 0;
   width: 100%;
   left: 0;
@@ -113,6 +113,7 @@ body {
   border-top: 1px solid #ddd;
   display: flex;
   align-items: center;
+  justify-content: space-around;
   padding: 0 15px;
 }
 
@@ -125,4 +126,10 @@ body {
 
 .Footer > p:hover {
   text-decoration: underline;
+}
+
+.Footer .form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }

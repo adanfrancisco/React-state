@@ -1,26 +1,21 @@
-import React, { Component } from 'react';
-import Movie from './Movie';
+import React from 'react'
+import Movie from './Movie'
 
-class MovieList extends Component {
- 
-  render(){
-    const { list, onLike, onUnlike } = this.props;
-
-    const listMovies = list.map((movie, index) => (
+const MovieList = ({ movies, handlerClickLike, handlerClickUnlike }) => (
+  <ul className="MovieList">
+    {movies.map((movie) => (
       <Movie 
         { ...movie } 
-        key={ index }
-        onLike={ onLike }
-        onUnlike={ onUnlike }
-        index={ index }
+        key={ movie.id }
+        handlerClickLike={() =>
+          handlerClickLike(movie.id, movie.like, movie.unlike)
+        }
+        handlerClickUnlike={() =>
+          handlerClickUnlike(movie.id, movie.like, movie.unlike)
+        }
       />
-    ));
-    return(
-      <ul className="MovieList">
-        { listMovies }
-      </ul>
-    );
-  }
-}
+    ))}
+  </ul>
+)
 
-export default MovieList;
+export default MovieList
