@@ -51,6 +51,7 @@ const dataMovies = (state = initialState.data, action) => {
       }
       return [...state, newMovie]
     }
+    
     case type.LIKE: {
       const newState = state.map(movie => {
         if (movie.id !== action.payload.id) {

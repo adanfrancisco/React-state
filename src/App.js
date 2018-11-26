@@ -6,13 +6,7 @@ import './App.css'
 import { like, unlike, add } from './actions'
 
 class Movies extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: []
-    };
-  }
-
+  
   handlerClickLike = (id, like, unlike) => {
     this.props.like(id, like, unlike)
   }
